@@ -1,0 +1,29 @@
+//- Using a flag (loggedIn) is not the correct way to manage state on a
+//- page like this...instead use some JS to get status from a cookie
+//- or other technique. There's a layer of security in the JWT since
+//- it is marked httpOnly, and the JWT signature is checked against
+//- a value stored on the backend.
+
+html
+    body
+        h1 Simple template to show round-trip to Twitter with OAuth calls
+        if !loggedIn
+            a(href='/auth/twitter') Login with Twitter
+        else
+            a(href='/auth/showAccount') Show Twitter account details
+            br
+            //a(href='/auth/showFavorites') Show Twitter favorites
+            //br
+            a(href='/auth/logout') Log out
+            br
+            a(href='http://localhost:3000/') Back to app
+            if account
+                h2 Details for #{account.screen_name}
+                ul
+                    each value, item in account
+                        li #{item}: #{value}
+        if favorites
+            h2 Favorites from #{user}:
+            ul
+                each favorite in favorites
+                    li #{favorite.text} (#{favorite.user.screen_name})
